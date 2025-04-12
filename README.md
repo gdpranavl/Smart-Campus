@@ -52,25 +52,31 @@ yarn dev
 ```
 college-website/
 ├── src/
-│   ├── app/                   # Next.js app pages
+│   ├── app/                   # Next.js app router pages
+│   │   ├── admin/             # Admin dashboard pages
+│   │   ├── ai-tutor/          # AI tutor pages
+│   │   ├── api/               # API routes
+│   │   └── [other pages]      # Other Next.js pages
 │   ├── components/            # React components
-│   │   ├── academics/         # Academic related components
+│   │   ├── academics/         # Academic components
 │   │   ├── ai-tutor/          # AI tutor components
 │   │   ├── attendance/        # Attendance components
-│   │   ├── auth/              # Authentication components
-│   │   ├── canteen/           # Canteen related components
 │   │   ├── dashboard/         # Dashboard components
-│   │   ├── events/            # Event related components
-│   │   ├── layout/            # Layout components (header, footer)
+│   │   ├── events/            # Event components
 │   │   ├── timetable/         # Timetable components
 │   │   └── ui/                # Reusable UI components
-│   ├── context/               # React context providers
-│   └── utils/                 # Utility functions and mock data
-├── public/                    # Static files
-├── next.config.js             # Next.js configuration
-├── tailwind.config.js         # Tailwind configuration
-├── package.json               # Project dependencies
-└── README.md                  # Project documentation
+│   ├── models/                # Database models
+│   ├── utils/                 # Utility functions
+│   │   ├── academicsData.ts   # Academic mock data
+│   │   ├── attendanceData.ts  # Attendance data
+│   │   ├── eventsData.ts      # Events data
+│   │   ├── mockAuth.ts        # Mock authentication
+│   │   └── timetableData.ts   # Timetable data
+├── public/                    # Static assets
+├── .env.local                 # Environment variables
+├── next.config.js             # Next.js config
+├── tailwind.config.js         # Tailwind CSS config
+└── package.json               # Project dependencies
 ```
 
 
