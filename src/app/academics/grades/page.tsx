@@ -1,4 +1,5 @@
 import GradeOverview from '@/components/academics/GradeOverview';
+import GradeCharts from '@/components/academics/GradeCharts';
 import { grades } from '@/utils/academicsData';
 
 export default function GradesPage() {
@@ -10,6 +11,8 @@ export default function GradesPage() {
           View your grades and academic performance for all courses.
         </p>
       </div>
+      
+      <GradeCharts grades={grades} />
       
       <div className="grid grid-cols-1 gap-6">
         <GradeOverview grades={grades} />

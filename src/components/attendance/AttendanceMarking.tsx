@@ -13,16 +13,16 @@ const classData = {
     year: 'numeric' 
   }),
   students: [
-    { id: 1, name: 'John Doe', rollNo: 'CS2023001' },
-    { id: 2, name: 'Jane Smith', rollNo: 'CS2023002' },
-    { id: 3, name: 'Alex Johnson', rollNo: 'CS2023003' },
-    { id: 4, name: 'Emily Brown', rollNo: 'CS2023004' },
-    { id: 5, name: 'Michael Wilson', rollNo: 'CS2023005' },
-    { id: 6, name: 'Sarah Davis', rollNo: 'CS2023006' },
-    { id: 7, name: 'David Taylor', rollNo: 'CS2023007' },
-    { id: 8, name: 'Lisa Anderson', rollNo: 'CS2023008' },
-    { id: 9, name: 'Robert Thomas', rollNo: 'CS2023009' },
-    { id: 10, name: 'Jennifer Martinez', rollNo: 'CS2023010' },
+    { id: 1, name: 'Rohan Sharma', rollNo: 'CS2023001' },
+    { id: 2, name: 'Priyanka Patel', rollNo: 'CS2023002' },
+    { id: 3, name: 'Arjun Kapoor', rollNo: 'CS2023003' },
+    { id: 4, name: 'Sneha Gupta', rollNo: 'CS2023004' },
+    { id: 5, name: 'Rahul Jain', rollNo: 'CS2023005' },
+    { id: 6, name: 'Aisha Khan', rollNo: 'CS2023006' },
+    { id: 7, name: 'Karan Singh', rollNo: 'CS2023007' },
+    { id: 8, name: 'Nalini Rao', rollNo: 'CS2023008' },
+    { id: 9, name: 'Vikram Verma', rollNo: 'CS2023009' },
+    { id: 10, name: 'Shreya Mishra', rollNo: 'CS2023010' },
   ]
 };
 

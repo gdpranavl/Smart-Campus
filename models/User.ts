@@ -7,6 +7,7 @@ interface IUser extends mongoose.Document {
   email: string;
   password: string;
   role: 'student' | 'teacher' | 'admin';
+  accountStatus: 'pending' | 'approved' | 'rejected';
   resetPasswordToken: string;
   resetPasswordExpire: Date;
   createdAt: Date;
@@ -39,6 +40,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['student', 'teacher', 'admin'],
     default: 'student',
+  },
+  accountStatus: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending',
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,

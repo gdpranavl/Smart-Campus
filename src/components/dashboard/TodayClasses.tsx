@@ -6,14 +6,14 @@ const classes = [
     subject: 'Data Structures',
     time: '10:00 AM - 11:00 AM',
     room: 'Room 101',
-    faculty: 'Dr. Johnson',
+    faculty: 'Dr. Rajesh Iyer',
   },
   {
     id: 2,
     subject: 'Web Development',
     time: '11:15 AM - 12:15 PM',
     room: 'Computer Lab 3',
-    faculty: 'Prof. Williams',
+    faculty: 'Prof. Meera Chatterjee',
   },
   {
     id: 3,
