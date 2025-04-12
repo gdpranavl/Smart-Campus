@@ -49,27 +49,30 @@ yarn dev
 
 ## Project Structure
 
+```
 college-website/
 ├── src/
-│ ├── app/ # Next.js app pages
-│ ├── components/ # React components
-│ │ ├── academics/ # Academic related components
-│ │ ├── ai-tutor/ # AI tutor components
-│ │ ├── attendance/ # Attendance components
-│ │ ├── auth/ # Authentication components
-│ │ ├── canteen/ # Canteen related components
-│ │ ├── dashboard/ # Dashboard components
-│ │ ├── events/ # Event related components
-│ │ ├── layout/ # Layout components (header, footer)
-│ │ ├── timetable/ # Timetable components
-│ │ └── ui/ # Reusable UI components
-│ ├── context/ # React context providers
-│ └── utils/ # Utility functions and mock data
-├── public/ # Static files
-├── next.config.js # Next.js configuration
-├── tailwind.config.js # Tailwind configuration
-├── package.json # Project dependencies
-└── README.md # Project documentation
+│   ├── app/                   # Next.js app pages
+│   ├── components/            # React components
+│   │   ├── academics/         # Academic related components
+│   │   ├── ai-tutor/          # AI tutor components
+│   │   ├── attendance/        # Attendance components
+│   │   ├── auth/              # Authentication components
+│   │   ├── canteen/           # Canteen related components
+│   │   ├── dashboard/         # Dashboard components
+│   │   ├── events/            # Event related components
+│   │   ├── layout/            # Layout components (header, footer)
+│   │   ├── timetable/         # Timetable components
+│   │   └── ui/                # Reusable UI components
+│   ├── context/               # React context providers
+│   └── utils/                 # Utility functions and mock data
+├── public/                    # Static files
+├── next.config.js             # Next.js configuration
+├── tailwind.config.js         # Tailwind configuration
+├── package.json               # Project dependencies
+└── README.md                  # Project documentation
+```
+
 
 ## Deployment
 
