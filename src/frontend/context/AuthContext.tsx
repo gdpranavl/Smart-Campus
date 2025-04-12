@@ -15,7 +15,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  logout: () => Promise<void>;
+  logout: () => void;
   isAuthenticated: boolean;
 }
 
@@ -29,28 +29,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setIsLoading(false);
+          return;
+        }
+
         const response = await fetch('/api/auth/verify', {
-          credentials: 'include'
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
 
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
         } else {
-          setUser(null);
-          router.push('/login');
+          localStorage.removeItem('token');
         }
       } catch (error) {
         console.error('Auth verification error:', error);
-        setUser(null);
-        router.push('/login');
+        localStorage.removeItem('token');
       } finally {
         setIsLoading(false);
       }
     };
 
     checkAuth();
-  }, [router]);
+  }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
@@ -60,41 +66,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem('token', data.token);
         setUser(data.user);
-        router.push('/dashboard');
+        setIsLoading(false);
         return true;
       }
       
+      setIsLoading(false);
       return false;
     } catch (error) {
       console.error('Login error:', error);
-      return false;
-    } finally {
       setIsLoading(false);
+      return false;
     }
   };
 
-  const logout = async () => {
-    try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      });
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      setUser(null);
-      router.push('/login');
-    }
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('token');
+    router.push('/login');
   };
-
-  const isAuthenticated = !!user;
 
   return (
     <AuthContext.Provider
@@ -103,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         login,
         logout,
-        isAuthenticated
+        isAuthenticated: !!user,
       }}
     >
       {children}
@@ -114,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
+} 
