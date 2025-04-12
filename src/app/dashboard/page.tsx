@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import Card from '@/components/ui/Card';
 import AttendanceChart from '@/components/dashboard/AttendanceChart';
 import UpcomingEvents from '@/components/dashboard/UpcomingEvents';
@@ -12,31 +10,16 @@ import AcademicUpdates from '@/components/dashboard/AcademicUpdates';
 import AITutorWidget from '@/components/dashboard/AITutorWidget';
 
 export default function DashboardPage() {
-  const { user, isLoading, isAuthenticated } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isLoading, isAuthenticated, router]);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
+  // Sample user data for demo purposes
+  const sampleUser = {
+    name: 'Student',
+    role: 'student'
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome, {user.name}!</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Welcome, {sampleUser.name}!</h1>
         <p className="mt-1 text-sm text-gray-500">
           Here's an overview of your college activities.
         </p>

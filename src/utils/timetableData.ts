@@ -44,7 +44,7 @@ export interface TimeSlot {
       id: 'c1',
       subject: 'Introduction to Computer Science',
       code: 'CS101',
-      professor: 'Dr. Johnson',
+      professor: 'Dr. Rajesh Iyer',
       room: 'Room 101',
       day: 0, // Monday
       timeSlotId: '1',
@@ -54,7 +54,7 @@ export interface TimeSlot {
       id: 'c2',
       subject: 'Advanced Mathematics',
       code: 'MATH201',
-      professor: 'Prof. Smith',
+      professor: 'Prof. Meera Chatterjee',
       room: 'Room 203',
       day: 0, // Monday
       timeSlotId: '3',
@@ -64,7 +64,7 @@ export interface TimeSlot {
       id: 'c3',
       subject: 'Physics I',
       code: 'PHY101',
-      professor: 'Dr. Williams',
+      professor: 'Dr. Vikram Singh',
       room: 'Lab 2',
       day: 1, // Tuesday
       timeSlotId: '2',
@@ -74,7 +74,7 @@ export interface TimeSlot {
       id: 'c4',
       subject: 'Data Structures and Algorithms',
       code: 'CS202',
-      professor: 'Dr. Miller',
+      professor: 'Dr. Ananya Banerjee',
       room: 'Computer Lab 1',
       day: 1, // Tuesday
       timeSlotId: '4',
@@ -94,7 +94,7 @@ export interface TimeSlot {
       id: 'c6',
       subject: 'Introduction to Computer Science',
       code: 'CS101',
-      professor: 'Dr. Johnson',
+      professor: 'Dr. Rajesh Iyer',
       room: 'Room 101',
       day: 2, // Wednesday
       timeSlotId: '5',
@@ -104,7 +104,7 @@ export interface TimeSlot {
       id: 'c7',
       subject: 'Physics I',
       code: 'PHY101',
-      professor: 'Dr. Williams',
+      professor: 'Dr. Vikram Singh',
       room: 'Lab 2',
       day: 3, // Thursday
       timeSlotId: '3',
@@ -114,7 +114,7 @@ export interface TimeSlot {
       id: 'c8',
       subject: 'Advanced Mathematics',
       code: 'MATH201',
-      professor: 'Prof. Smith',
+      professor: 'Prof. Meera Chatterjee',
       room: 'Room 203',
       day: 3, // Thursday
       timeSlotId: '5',
@@ -124,7 +124,7 @@ export interface TimeSlot {
       id: 'c9',
       subject: 'Data Structures and Algorithms',
       code: 'CS202',
-      professor: 'Dr. Miller',
+      professor: 'Dr. Ananya Banerjee',
       room: 'Computer Lab 1',
       day: 4, // Friday
       timeSlotId: '2',

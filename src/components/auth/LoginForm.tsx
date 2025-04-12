@@ -1,8 +1,9 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import { initMockUsers } from '@/utils/mockAuth';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -10,6 +11,11 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const { login, isLoading } = useAuth();
   const router = useRouter();
+
+  // Initialize mock users when component mounts
+  useEffect(() => {
+    initMockUsers();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +39,7 @@ export default function LoginForm() {
       <div className="text-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">Login to Your Account</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Enter your credentials to access your student dashboard
+          Enter your credentials to access your dashboard
         </p>
       </div>
 

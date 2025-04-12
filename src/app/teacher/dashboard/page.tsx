@@ -1,38 +1,46 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import SubjectCard from '@/components/teacher/SubjectCard';
 import ResourceUpload from '@/components/teacher/ResourceUpload';
 import AttendanceManager from '@/components/teacher/AttendanceManager';
 
 export default function TeacherDashboard() {
   const [activeTab, setActiveTab] = useState('subjects');
-  const { user } = useAuth();
-  const [subjects, setSubjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchTeacherSubjects();
-  }, []);
-
-  const fetchTeacherSubjects = async () => {
-    try {
-      const response = await fetch('/api/teacher/subjects');
-      const data = await response.json();
-      if (response.ok) {
-        setSubjects(data.subjects);
-      }
-    } catch (error) {
-      console.error('Error fetching subjects:', error);
-    } finally {
-      setLoading(false);
-    }
+  
+  // Sample teacher data for demo purposes
+  const sampleTeacher = {
+    name: 'Professor Smith',
+    role: 'teacher'
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  
+  // Sample subjects data for demo purposes
+  const [subjects, setSubjects] = useState([
+    {
+      _id: '1',
+      name: 'Introduction to Computer Science',
+      code: 'CS101',
+      schedule: 'Mon, Wed 10:00 AM - 11:30 AM',
+      students: 45,
+      resources: [
+        { _id: '1', title: 'Syllabus', type: 'pdf', url: '#' },
+        { _id: '2', title: 'Week 1 Slides', type: 'ppt', url: '#' }
+      ]
+    },
+    {
+      _id: '2',
+      name: 'Data Structures and Algorithms',
+      code: 'CS201',
+      schedule: 'Tue, Thu 1:00 PM - 2:30 PM',
+      students: 38,
+      resources: [
+        { _id: '3', title: 'Course Overview', type: 'pdf', url: '#' },
+        { _id: '4', title: 'Assignment 1', type: 'docx', url: '#' }
+      ]
+    }
+  ]);
+  
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -40,7 +48,7 @@ export default function TeacherDashboard() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
           <p className="mt-2 text-sm text-gray-600">
-            Welcome back, {user?.name}
+            Welcome back, {sampleTeacher.name}
           </p>
         </div>
 
@@ -75,7 +83,7 @@ export default function TeacherDashboard() {
               <SubjectCard
                 key={subject._id}
                 subject={subject}
-                onUpdate={fetchTeacherSubjects}
+                onUpdate={() => {}}
               />
             ))}
             {subjects.length === 0 && (

@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Name is required'],
+    example: 'Rohan Sharma',
+    description: 'Full name of the user (e.g. Rohan Sharma, Priyanka Patel, Arjun Kapoor)'
   },
   email: {
     type: String,
@@ -20,8 +22,13 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['student', 'faculty', 'admin'],
+    enum: ['student', 'teacher', 'admin'],
     default: 'student',
+  },
+  accountStatus: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending',
   },
   department: {
     type: String,
@@ -60,4 +67,4 @@ userSchema.methods.comparePassword = async function(candidatePassword: string) {
 // Create the model if it doesn't exist, otherwise use the existing one
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-export default User; 
+export default User;

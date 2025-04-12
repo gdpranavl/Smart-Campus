@@ -23,13 +23,13 @@ export default function AITutorPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">AI Tutor</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-3xl font-bold text-gray-200">AI Tutor</h1>
+        <p className="mt-1 text-sm text-gray-100">
           Get personalized academic help with our AI tutor. Ask questions about any subject.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 text-gray-800 gap-6">
         <div className="lg:col-span-2">
           <ChatInterface ref={chatInterfaceRef} />
         </div>
@@ -41,7 +41,7 @@ export default function AITutorPage() {
               {suggestedTopics.map((topic, index) => (
                 <li key={index}>
                   <button 
-                    className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
+                    className="w-full text-left px-4 py-2 bg-gray-300 hover:bg-gray-200 text-gray-900 rounded-lg text-sm"
                     onClick={() => handleTopicClick(topic)}
                   >
                     {topic}

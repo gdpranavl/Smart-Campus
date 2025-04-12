@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
-import ChatMessage from './ChatMessage'; // Assuming ChatMessage component exists at this path
+import ChatMessage from './ChatMessage';
 
 type Message = {
   content: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
 };
 
 // Define the type for the ref methods
@@ -14,16 +14,32 @@ export interface ChatInterfaceHandle {
 }
 
 interface ChatInterfaceProps {
-    // This prop is defined but not used in the provided logic.
-    // If you intend to use it, you should destructure it from props.
-    onSuggestedTopicClick?: (topic: string) => void;
+  onSuggestedTopicClick?: (topic: string) => void;
 }
+
+// Sample student context - in a real app, this would come from user profile
+const studentContext = {
+  major: 'Computer Science',
+  year: 'Third Year',
+  currentCourses: [
+    'Data Structures and Algorithms',
+    'Database Systems',
+    'Web Development',
+    'Artificial Intelligence Fundamentals',
+    'Operating Systems'
+  ],
+  academicInterests: ['Machine Learning', 'Software Engineering', 'Web Development']
+};
 
 const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props, ref) => {
   const [messages, setMessages] = useState<Message[]>([
     {
+      role: 'system',
+      content: `The student is a ${studentContext.year} ${studentContext.major} major currently taking: ${studentContext.currentCourses.join(', ')}. Their academic interests include: ${studentContext.academicInterests.join(', ')}.`
+    },
+    {
       role: 'assistant',
-      content: "Hello! I'm your AI academic tutor. How can I help you today?"
+      content: "Hello! I'm your AI academic tutor specialized in college-level subjects. How can I help you with your studies today?"
     }
   ]);
 
@@ -40,6 +56,8 @@ const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props
     // Add user message to chat immediately and capture the updated state
     let updatedMessages: Message[] = [];
     setMessages((prev) => {
+        // Filter out system messages when displaying to user
+        const visibleMessages = prev.filter(msg => msg.role !== 'system');
         updatedMessages = [...prev, userMessage];
         return updatedMessages;
     });
@@ -113,18 +131,22 @@ const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props
     await sendMessage(currentInput); // Send the message
   };
 
+  // Only show messages that are from user or assistant (not system messages)
+  const visibleMessages = messages.filter(msg => msg.role === 'user' || msg.role === 'assistant');
+
   return (
     <div className="flex flex-col h-[600px] bg-white rounded-lg shadow-md overflow-hidden">
       {/* Header */}
       <div className="p-4 bg-indigo-600 text-white">
         <h2 className="text-xl font-semibold">AI Academic Tutor</h2>
+        <p className="text-xs opacity-80">Specialized for {studentContext.major} students</p>
       </div>
 
       {/* Messages Area */}
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
-        {messages.map((message, index) => (
+        {visibleMessages.map((message, index) => (
           <ChatMessage
-            key={index} // Using index is okay if list only grows/shrinks at the end
+            key={index}
             message={message.content}
             isUser={message.role === 'user'}
           />
@@ -146,13 +168,13 @@ const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200">
+      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-600">
         <div className="flex space-x-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask your question..."
+            placeholder="Ask about any academic topic..."
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             disabled={isLoading}
             aria-label="Chat input"
@@ -173,4 +195,4 @@ const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props
 // Add display name for better debugging
 ChatInterface.displayName = 'ChatInterface';
 
-export default ChatInterface; // Assuming this is the default export
+export default ChatInterface;

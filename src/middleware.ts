@@ -14,20 +14,41 @@ export async function middleware(request: NextRequest) {
     '/register',
     '/forgot-password',
     '/reset-password',
+    '/contact-admin',
     '/api/auth/login',
     '/api/auth/register',
     '/api/auth/reset-password',
     '/api/auth/reset-password-request',
+    '/api/seed-admin', // Allow seeding the admin user
+    '/account-pending',
+    '/account-rejected',
   ];
+  
+  // Paths that are accessible without login for demo purposes
+  const demoAccessPaths = [
+    '/dashboard',
+    '/academics',
+    '/student',
+    '/teacher',
+    '/admin',
+    '/ai-tutor',
+  ];
+  
   const isPublicPath = publicPaths.some(path => pathname.startsWith(path));
+  const isDemoPath = demoAccessPaths.some(path => pathname.startsWith(path));
+
+  // Allow access to demo paths without login
+  if (isDemoPath && !token) {
+    return NextResponse.next();
+  }
 
   // Redirect authenticated users away from login page
   if (isPublicPath && token) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // Protect all routes except public paths
-  if (!isPublicPath && !token) {
+  // Protect all routes except public paths and demo paths
+  if (!isPublicPath && !isDemoPath && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -39,6 +60,16 @@ export async function middleware(request: NextRequest) {
         new TextEncoder().encode(JWT_SECRET)
       );
       const userRole = verified.payload.role as string;
+      const accountStatus = verified.payload.accountStatus as string;
+
+      // Check account status
+      if (accountStatus === 'pending') {
+        return NextResponse.redirect(new URL('/account-pending', request.url));
+      }
+
+      if (accountStatus === 'rejected') {
+        return NextResponse.redirect(new URL('/account-rejected', request.url));
+      }
 
       // Admin routes
       if (pathname.startsWith('/admin') && userRole !== 'admin') {
@@ -46,12 +77,17 @@ export async function middleware(request: NextRequest) {
       }
 
       // Teacher routes
-      if (pathname.startsWith('/teacher') && !['admin', 'faculty'].includes(userRole)) {
+      if (pathname.startsWith('/teacher') && !['admin', 'teacher'].includes(userRole)) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }
 
       // Student routes
-      if (pathname.startsWith('/student') && !['admin', 'faculty', 'student'].includes(userRole)) {
+      if (pathname.startsWith('/student') && !['admin', 'teacher', 'student'].includes(userRole)) {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
+
+      // Mark attendance route - only teachers and admins can access
+      if (pathname.includes('/attendance') && !['admin', 'teacher'].includes(userRole)) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }
 
@@ -60,7 +96,7 @@ export async function middleware(request: NextRequest) {
         switch (userRole) {
           case 'admin':
             return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-          case 'faculty':
+          case 'teacher':
             return NextResponse.redirect(new URL('/teacher/dashboard', request.url));
           case 'student':
             return NextResponse.redirect(new URL('/student/dashboard', request.url));

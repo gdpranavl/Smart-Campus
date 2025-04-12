@@ -66,11 +66,11 @@ export const subjectAttendanceData: SubjectAttendance[] = [
 export const generateDailyAttendance = (): DailyAttendance[] => {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const subjects = [
-    { id: 'cs101', name: 'Introduction to Computer Science', professor: 'Dr. Johnson' },
-    { id: 'math201', name: 'Advanced Mathematics', professor: 'Prof. Smith' },
-    { id: 'phy101', name: 'Physics I', professor: 'Dr. Williams' },
-    { id: 'eng202', name: 'Technical Writing', professor: 'Prof. Davis' },
-    { id: 'cs202', name: 'Data Structures and Algorithms', professor: 'Dr. Miller' },
+    { id: 'cs101', name: 'Introduction to Computer Science', professor: 'Dr. Rajesh Iyer' },
+    { id: 'math201', name: 'Advanced Mathematics', professor: 'Prof. Meera Chatterjee' },
+    { id: 'phy101', name: 'Physics I', professor: 'Dr. Vikram Singh' },
+    { id: 'eng202', name: 'Technical Writing', professor: 'Prof. Ramesh Rao' },
+    { id: 'cs202', name: 'Data Structures and Algorithms', professor: 'Dr. Ananya Banerjee' },
   ];
   
   // Generate random status with bias towards 'present'

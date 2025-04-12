@@ -67,81 +67,81 @@ export interface Course {
       code: 'CSE101',
       name: 'Introduction to Computer Science',
       description: 'An introductory course covering fundamental concepts of computer science, programming basics, and problem-solving techniques.',
-      instructor: 'Dr. Johnson',
+      instructor: 'Dr. Rajesh Iyer',
       credits: 4,
       semester: 'Spring 2025',
       schedule: {
         days: ['Monday', 'Wednesday'],
         time: '10:00 AM - 11:30 AM',
-        location: 'Science Building, Room 101',
+        location: 'Room 101'
       },
-      progress: 65,
-      image: 'https://source.unsplash.com/random/300x200/?computer',
+      progress: 45,
+      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80'
     },
     {
       id: 'math201',
       code: 'MATH201',
       name: 'Advanced Mathematics',
       description: 'A comprehensive study of calculus, linear algebra, and differential equations with applications in science and engineering.',
-      instructor: 'Prof. Smith',
+      instructor: 'Prof. Meera Chatterjee',
       credits: 3,
       semester: 'Spring 2025',
       schedule: {
         days: ['Tuesday', 'Thursday'],
-        time: '2:00 PM - 3:30 PM',
-        location: 'Mathematics Building, Room 203',
+        time: '9:00 AM - 10:30 AM',
+        location: 'Room 203'
       },
-      progress: 72,
-      image: 'https://source.unsplash.com/random/300x200/?mathematics',
+      progress: 60,
+      image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
     },
     {
       id: 'phy101',
       code: 'PHY101',
       name: 'Physics I',
       description: 'Introduction to classical mechanics, including kinematics, Newton\'s laws of motion, work and energy, momentum, and rotational motion.',
-      instructor: 'Dr. Williams',
+      instructor: 'Dr. Vikram Singh',
       credits: 4,
       semester: 'Spring 2025',
       schedule: {
-        days: ['Monday', 'Wednesday', 'Friday'],
-        time: '1:00 PM - 2:00 PM',
-        location: 'Science Building, Room 105',
+        days: ['Monday', 'Friday'],
+        time: '1:00 PM - 2:30 PM',
+        location: 'Lab 2'
       },
-      progress: 58,
-      image: 'https://source.unsplash.com/random/300x200/?physics',
+      progress: 30,
+      image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
     },
     {
       id: 'eng202',
       code: 'ENG202',
       name: 'Technical Writing',
       description: 'Development of technical writing skills, focusing on clarity, conciseness, document design, and research techniques for technical and professional contexts.',
-      instructor: 'Prof. Davis',
+      instructor: 'Dr. Ananya Banerjee',
       credits: 3,
       semester: 'Spring 2025',
       schedule: {
-        days: ['Tuesday', 'Thursday'],
-        time: '11:00 AM - 12:30 PM',
-        location: 'Humanities Building, Room 302',
+        days: ['Wednesday'],
+        time: '3:00 PM - 5:00 PM',
+        location: 'Room 105'
       },
-      progress: 81,
-      image: 'https://source.unsplash.com/random/300x200/?writing',
+      progress: 75,
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
     },
     {
       id: 'cs202',
       code: 'CS202',
       name: 'Data Structures and Algorithms',
       description: 'Study of fundamental data structures, algorithms, and their applications in computer science, including complexity analysis and problem-solving strategies.',
-      instructor: 'Dr. Miller',
+      instructor: 'Dr. Rohan Desai',
       credits: 4,
       semester: 'Spring 2025',
       schedule: {
-        days: ['Monday', 'Wednesday'],
-        time: '3:00 PM - 4:30 PM',
-        location: 'Computer Science Building, Room 105',
+        days: ['Tuesday', 'Thursday'],
+        time: '11:00 AM - 12:30 PM',
+        location: 'Computer Lab 1'
       },
-      progress: 70,
-      image: 'https://source.unsplash.com/random/300x200/?algorithm',
-    },
+      progress: 25,
+      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
+    }
   ];
   
   // Mock data for assignments
@@ -285,7 +285,7 @@ export interface Course {
       title: 'Class Canceled - April 15',
       content: 'The Introduction to Computer Science class scheduled for April 15 is canceled due to a faculty meeting. We will cover the material in the next class.',
       date: '2025-04-12',
-      author: 'Dr. Johnson',
+      author: 'Dr. Rajesh Iyer',
       important: true,
     },
     {
@@ -294,7 +294,7 @@ export interface Course {
       title: 'Extra Help Session',
       content: 'An additional help session for the upcoming midterm will be held this Friday from 3:00 PM to 5:00 PM in Room 204.',
       date: '2025-04-09',
-      author: 'Prof. Smith',
+      author: 'Prof. Meera Chatterjee',
       important: false,
     },
     {

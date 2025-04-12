@@ -1,13 +1,15 @@
 "use client";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { authenticateUser } from '@/utils/mockAuth';
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'student' | 'faculty' | 'admin';
-  department: string;
+  role: 'student' | 'teacher' | 'admin';
+  accountStatus: 'pending' | 'approved' | 'rejected';
+  department?: string;
   profileImage?: string;
 }
 
@@ -26,51 +28,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  // Simplified verification for mock auth
   useEffect(() => {
-    const checkAuth = async () => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
       try {
-        const response = await fetch('/api/auth/verify', {
-          credentials: 'include'
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          setUser(null);
-          router.push('/login');
-        }
+        const userData = JSON.parse(token);
+        setUser(userData);
       } catch (error) {
-        console.error('Auth verification error:', error);
-        setUser(null);
-        router.push('/login');
-      } finally {
-        setIsLoading(false);
+        console.error('Error parsing auth token:', error);
+        localStorage.removeItem('authToken');
       }
-    };
-
-    checkAuth();
+    }
+    setIsLoading(false);
   }, [router]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-        router.push('/dashboard');
+      const user = authenticateUser(email, password);
+      if (user) {
+        setUser(user);
+        localStorage.setItem('authToken', JSON.stringify(user));
+        
+        // Redirect based on role
+        if (user.role === 'admin') {
+          router.push('/admin/dashboard');
+        } else if (user.role === 'teacher') {
+          router.push('/teacher/dashboard');
+        } else {
+          router.push('/dashboard');
+        }
         return true;
       }
-      
       return false;
     } catch (error) {
       console.error('Login error:', error);
@@ -81,17 +71,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      });
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      setUser(null);
-      router.push('/login');
-    }
+    localStorage.removeItem('authToken');
+    setUser(null);
+    router.push('/login');
   };
 
   const isAuthenticated = !!user;
