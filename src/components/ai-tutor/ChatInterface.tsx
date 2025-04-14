@@ -51,31 +51,20 @@ const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props
   const sendMessage = async (messageContent: string) => {
     if (!messageContent.trim()) return;
 
-    const userMessage: Message = { role: 'user', content: messageContent.trim() };
+    const userMessage: Message = { role: 'user', content: messageContent };
+    // Prepare the complete message list *before* the fetch call
+    const updatedMessages = [...messages, userMessage];
 
-    // Add user message to chat immediately and capture the updated state
-    let updatedMessages: Message[] = [];
-    setMessages((prev) => {
-        // Filter out system messages when displaying to user
-        const visibleMessages = prev.filter(msg => msg.role !== 'system');
-        updatedMessages = [...prev, userMessage];
-        return updatedMessages;
-    });
+    // Update the UI optimistically
+    setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
-      // Send message list (including the new user message) to API
       const response = await fetch('/api/ai-tutor', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: updatedMessages.map(({ role, content }) => ({
-            role,
-            content,
-          })),
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        // Send the prepared, updated message list
+        body: JSON.stringify({ messages: updatedMessages }),
       });
 
       if (!response.ok) {
@@ -92,12 +81,13 @@ const ChatInterface = forwardRef<ChatInterfaceHandle, ChatInterfaceProps>((props
       setMessages((prev) => [...prev, aiMessage]);
 
     } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage: Message = {
+      // Check error type before accessing message
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      console.error("ChatInterface Error:", error); // Log the actual error object
+      setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "I'm sorry, something went wrong. Please try again later."
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+        content: `Sorry, I couldn't process that. Error: ${errorMessage}` // Provide clearer error feedback
+      }]);
     } finally {
       setIsLoading(false);
     }
