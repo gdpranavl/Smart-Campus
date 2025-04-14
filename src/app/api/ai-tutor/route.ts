@@ -1,70 +1,120 @@
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
 
-// Initialize the OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize the OpenAI client correctly
+let openai: OpenAI;
+try {
+  // Ensure the key exists before initializing
+  if (!process.env.OPENAI_API_KEY) {
+    console.error("OPENAI_API_KEY environment variable is not set.");
+    // We'll handle the error case within the POST handler
+  } else {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+      // Remove baseURL if sticking to OpenAI
+    });
+  }
+} catch (error) {
+  console.error("Failed to initialize OpenAI client:", error);
+  // Error will be caught in POST handler if openai is undefined
+}
 
 export async function POST(request: Request) {
   try {
-    const { messages } = await request.json();
-    
-    // Debug logging
-    console.log('AI Tutor API called');
-    console.log('API Key defined:', !!process.env.OPENAI_API_KEY);
-    console.log('Messages received:', JSON.stringify(messages));
-    
-    // Check if OpenAI API key is set
-    if (!process.env.OPENAI_API_KEY) {
-      console.error('OPENAI_API_KEY is not set');
-      // Fallback response for testing when API key is not available
-      return NextResponse.json({ 
-        message: "[DEBUG MODE] API key not set - This is a fallback response. Please configure your OpenAI API key in .env.local"
-      });
+    // Check if client initialized successfully
+    if (!openai) {
+      return NextResponse.json(
+        { error: "AI Tutor service not configured correctly. Missing API key?" },
+        { status: 500 }
+      );
     }
+
+    // Input validation
+    let body;
+    try {
+      body = await request.json();
+    } catch (error) {
+      console.error("Invalid JSON in request body:", error);
+      return NextResponse.json(
+        { error: "Invalid request format. Please provide valid JSON." },
+        { status: 400 }
+      );
+    }
+
+    const { messages } = body;
+
+    // Validate messages array
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      console.error("Invalid or empty messages array:", messages);
+      return NextResponse.json(
+        { error: "Please provide a non-empty messages array." },
+        { status: 400 }
+      );
+    }
+
+    // Prepare the system message (optional but good practice)
+    const systemMessage = {
+      role: "system",
+      // Use backticks for multi-line template literal
+      content: `You are an expert academic tutor for college students providing educational assistance. 
+        
+Your purpose is to provide accurate, relevant, and focused answers to academic questions within ethical boundaries. When providing information:
+
+- Focus on educational content
+- Provide balanced perspectives
+- Avoid generating harmful content
+- If a question seems inappropriate, respond with helpful educational guidance instead of refusing
+- Always attempt to provide some educational value in your response
+
+Remember that you're in an educational context helping students learn.`
+    };
+
+    // Combine messages
+    const completeMessages = [systemMessage, ...messages];
 
     try {
+      // Make the API call to OpenAI
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert academic tutor for college students. Your purpose is to provide accurate, relevant, and focused answers to academic questions. 
-            
-GUIDELINES:
-1. Focus exclusively on academic content and educational topics
-2. Provide specific, detailed explanations with examples when helpful
-3. If the student asks about a topic outside of academics, gently redirect them to academic subjects
-4. Use college-level terminology and concepts appropriate for the student's question
-5. Structure your responses in a clear, organized manner
-6. For math and science questions, explain step-by-step reasoning
-7. For humanities questions, provide thoughtful analysis and relevant contexts
-8. If you don't know something, admit it rather than guessing
-9. Provide supplementary learning resources when appropriate
-10. Keep responses concise but comprehensive
+        model: "gpt-3.5-turbo", // Use a standard OpenAI model
+        messages: completeMessages,
+        temperature: 0.5,        
+        max_tokens: 800,        
+      });
 
-You specialize in subjects including: mathematics, physics, chemistry, biology, computer science, literature, history, philosophy, economics, and other standard college subjects.`
-          },
-          ...messages
-        ],
-        temperature: 0.5, // Lower temperature for more focused, deterministic responses
-        max_tokens: 800, // Increased max tokens to allow for more detailed responses
+      // Validate OpenAI response
+      if (!response.choices || response.choices.length === 0 || !response.choices[0].message?.content) {
+        console.error('Invalid or empty response structure from OpenAI:', response);
+        throw new Error("Received an invalid response from the AI model.");
+      }
+
+      // Return the AI response content correctly
+      return NextResponse.json({
+        content: response.choices[0].message.content,
+        role: "assistant" // Match frontend expectation
       });
+
+    } catch (error: any) {
+      console.error('Error during OpenAI API call:', error);
       
-      console.log('OpenAI API response received');
-      
-      return NextResponse.json({ 
-        message: response.choices[0].message.content 
-      });
-    } catch (openaiError) {
-      console.error('OpenAI API error:', openaiError);
-      throw openaiError;
+      // Provide more specific error feedback
+      let errorMessage = "Failed to get response from AI model.";
+      let statusCode = 500;
+
+      if (error instanceof OpenAI.APIError) {
+        errorMessage = `OpenAI API Error: ${error.message}`;
+        statusCode = error.status || 500;
+        if (statusCode === 401) errorMessage = "Invalid OpenAI API Key.";
+        if (statusCode === 429) errorMessage = "OpenAI Rate Limit Exceeded.";
+      }
+
+      return NextResponse.json({ error: errorMessage }, { status: statusCode });
     }
+
   } catch (error: any) {
-    console.error('AI Tutor error:', error);
+    // Catch-all for unexpected server errors
+    console.error('Unhandled AI Tutor error:', error);
     return NextResponse.json(
-      { error: "An error occurred while processing your request", details: error.message || 'Unknown error' },
+      { error: "An unexpected server error occurred." },
       { status: 500 }
     );
   }

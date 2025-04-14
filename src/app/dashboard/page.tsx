@@ -19,7 +19,7 @@ export default function DashboardPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome, {sampleUser.name}!</h1>
+        <h1 className="text-3xl font-bold text-gray-200">Welcome, {sampleUser.name}!</h1>
         <p className="mt-1 text-sm text-gray-500">
           Here's an overview of your college activities.
         </p>

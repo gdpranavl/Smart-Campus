@@ -5,7 +5,7 @@ export default function TimetablePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Timetable</h1>
+        <h1 className="text-3xl font-bold text-gray-200">Timetable</h1>
         <p className="mt-1 text-sm text-gray-500">
           View your weekly and daily class schedule.
         </p>
